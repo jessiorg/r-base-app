@@ -1,0 +1,60 @@
+# R API Service Definition
+# Add this to your main docker-compose.yml
+
+version: '3.8'
+
+services:
+  r-api:
+    container_name: r-api
+    build:
+      context: /data/r-api
+      dockerfile: Dockerfile
+    image: r-api:latest
+    restart: unless-stopped
+    
+    # Environment
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - R_MAX_VSIZE=4Gb
+    
+    # Ports
+    ports:
+      - "8002:8000"
+    
+    # Volumes
+    volumes:
+      - /data/r-api/logs:/var/log
+    
+    # Resources
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Network
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    external: true
