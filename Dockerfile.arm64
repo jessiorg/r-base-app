@@ -1,0 +1,1 @@
+FROM --platform=linux/arm64/v8 rocker/r-base:4.4.0
