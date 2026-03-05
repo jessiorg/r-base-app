@@ -1,0 +1,9 @@
+# VPS Integration Python Dependencies
+# Install with: pip install -r requirements.txt
+
+Flask==3.0.0
+flask-limiter==3.5.0
+PyJWT==2.8.0
+cryptography==41.0.7
+gunicorn==21.2.0
+Werkzeug==3.0.1
